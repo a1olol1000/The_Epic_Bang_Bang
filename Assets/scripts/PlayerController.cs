@@ -1,10 +1,16 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.Mathematics;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
 public class PlayerController : MonoBehaviour
 {
+    [SerializeField]
+    float fireRate=1f;
+    float fireScene=1f;
+    [SerializeField]
+    GameObject bigBolt;
     [SerializeField]
     float shipSpeed=7.5f;
     Vector2 movement = Vector2.zero;
@@ -20,6 +26,7 @@ public class PlayerController : MonoBehaviour
     {
         movement.Normalize();
         transform.Translate(movement * shipSpeed * Time.deltaTime);
+        
     }
 
     void OnMove(InputValue value)
@@ -27,8 +34,12 @@ public class PlayerController : MonoBehaviour
         movement = value.Get<Vector2>();
     }
 
-    void OnJump(InputValue value)
+    void OnShoot(InputValue value)
     {
-        Debug.Log("yey");
+        if (fireRate > 1)
+        {
+            GameObject.Instantiate(bigBolt,transform.position,quaternion.identity);
+            fireRate = 0;
+        }
     }
 }
